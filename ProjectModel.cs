@@ -8,5 +8,6 @@ namespace miniprojekt_sql
 {
     internal class ProjectModel
     {
+
     }
 }
