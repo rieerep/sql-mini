@@ -12,7 +12,7 @@ namespace miniprojekt_sql
 {
     internal class PostgressDataAccess
     {
-        public static List<ProjectModel> Projects()
+        public static List<ProjectModel> ListProjects()
         {
             using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
             {
@@ -25,7 +25,20 @@ namespace miniprojekt_sql
             // läser ut alla Users
             // Returnerar en lista av Users
         }
-        private static string LoadConnectionString(string id = "Default")
+
+		public static List<PersonModel> ListPersons()
+		{
+			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+			{
+
+				var output = cnn.Query<PersonModel>("SELECT * from rer_person", new DynamicParameters());
+				return output.ToList();
+			}
+			// Kopplar upp mot DB:n
+			// läser ut alla Users
+			// Returnerar en lista av Users
+		}
+		private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
