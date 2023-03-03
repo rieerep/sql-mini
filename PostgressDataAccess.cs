@@ -38,6 +38,23 @@ namespace miniprojekt_sql
 			// läser ut alla Users
 			// Returnerar en lista av Users
 		}
+
+        public static void NewPerson(PersonModel newPerson)
+        {
+			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+			{
+
+				cnn.Execute("INSERT INTO rer_person (person_name) values (@person_name)", newPerson);
+			}
+		}
+
+        public static void NewProject(ProjectModel newProject)
+        {
+            using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+            {
+                cnn.Execute("INSERT INTO rer_project (project_name) VALUES (@project_name)", newProject);
+            }
+        }
 		private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
