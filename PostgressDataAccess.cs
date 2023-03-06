@@ -21,7 +21,7 @@ namespace miniprojekt_sql
                 //Console.WriteLine(output);
                 return output.ToList();
             }
-            // Kopplar upp mot DB:n
+            // Kopplar upp mot DB:n 
             // läser ut alla Users
             // Returnerar en lista av Users
         }
@@ -44,7 +44,7 @@ namespace miniprojekt_sql
 			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
 			{
 
-				cnn.Execute("INSERT INTO rer_person (person_name) values (@person_name)", newPerson);
+				cnn.Execute("INSERT INTO rer_person (person_name) VALUES (@person_name)", newPerson);
 			}
 		}
 
@@ -58,6 +58,14 @@ namespace miniprojekt_sql
 		private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+        }
+
+        public static void AddTimeToProject(ProjectPersonModel addTime)
+        {
+            using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+            {
+                cnn.Execute("INSERT INTO rer_project_person (project_id, person_id, hours) VALUES (@project_id, @person_id, @hours)", addTime);
+            }
         }
     }
 }
