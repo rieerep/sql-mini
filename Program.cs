@@ -108,17 +108,17 @@ class Program
 		return projectUserChoice - 1;
 	}
 
-	static int MenuSystem(List<PersonModel> allPeople)
+	static int MenuSystem(List<PersonModel> allPeople) 
 	{
 		for (int index = 0; index < allPeople.Count; index++)
 		{
 			// Skriver ut menyvalen
-			Console.WriteLine($"{index + 1}. {allPeople[index].person_name}");
+			Console.WriteLine($"{index + 1}. {allPeople[index].person_name}"); 
 		}
 		Console.Write(">>>> ");
 		string userInput = Console.ReadLine();
 		int personUserChoice = int.Parse(userInput);
-
+        personUserChoice++;
 		return personUserChoice - 1;
 	}
 

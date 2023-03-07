@@ -64,7 +64,9 @@ namespace miniprojekt_sql
         {
             using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
             {
-                cnn.Execute("INSERT INTO rer_project_person (project_id, person_id, hours) VALUES (@project_id, @person_id, @hours)", addTime);
+				Console.WriteLine(addTime.person_id);
+				Console.WriteLine(addTime.project_id);
+				cnn.Execute("INSERT INTO rer_project_person (project_id, person_id, hours) VALUES (@project_id, @person_id, @hours)", addTime);
             }
         }
     }
