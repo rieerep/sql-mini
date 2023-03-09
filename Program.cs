@@ -3,81 +3,45 @@ class Program
 {
     static void Main(string[] args)
     {
-
-        // Lists all projects in the database
-		List<ProjectModel> allProjects = PostgressDataAccess.ListProjects();
-        for (int i = 0; i < allProjects.Count; i++)
-        {
-            //Console.WriteLine(allProjects[i].project_name);
-        }
-
-        // Lists all persons in the database
+        Console.WriteLine("Hello!1");
+        List<ProjectModel> allProjects = PostgressDataAccess.ListProjects();
 		List<PersonModel> allUser = PostgressDataAccess.ListPersons();
-        //string[] allUserArray = allUser.ToArray();
-        for (int index = 0; index < allUser.Count; index++)
-        {
-            //Console.WriteLine($"All users: {allUser[index].person_name}");
-        }
 
-        List<string> menuOptions = new List<string> { "Create user", "Create a project", "Time reporting" };
-        
+		List<string> menuOptions = new List<string> {"Create user", "Create a project", "Time reporting"};
         
         // Prints the menu users can choose between.
-        MenuSystem(menuOptions);
-
+        //MenuSystem(menuOptions);
+        //int userChoice = MenuSystem(menuOptions);
+        //Console.WriteLine(userChoice);
         int userChoiceIndex = MenuSystem(menuOptions);
 
-        // Om användaren trycker "1" och vill skapa en användare
-        if (userChoiceIndex == 0) 
+		// Om användaren trycker "1" och vill skapa en användare
+		if (userChoiceIndex == 0) 
         {
-            CreateUser(allUser);
-            //Console.WriteLine("Du skapar en användare!");
-            //Console.WriteLine("Skriv in in namn på användaren: ");
-            //Console.Write(">>>> ");
-            //string personName = Console.ReadLine();
-
-            //PersonModel newPerson = new PersonModel()
-            //{
-            //    person_name = personName
-            //};
-            //PostgressDataAccess.NewPerson(newPerson);
-
+            CreateUser();
+            return;
         }
         // Om användaren trycker "2" och vill skapa ett projekt
         else if (userChoiceIndex == 1)
         {
             Console.WriteLine("Du skapar ett projekt.");
             CreateProject();
-            Console.WriteLine("End of method!!!!!");
         }
         // Om användaren trycker "3" och vill välja användare och rapportera tid
         else if (userChoiceIndex == 2)
         {
             Console.WriteLine("Du valde rapportera tid");
-
-            MenuSystem(allUser);
+            // MenuSystem(allUser);
             int userHours = MenuSystem(allUser);
-            MenuSystem(allProjects);
+            // MenuSystem(allProjects);
             int projectHours = MenuSystem(allProjects);
             AddHours(userHours, projectHours);
-            //AddHours(projectUserChoice, personUserChoice)
-
-
-
-            // Lista alla användare i databasen
-            // Välj vilken användare som ska rapportera tid (Skicka in MenuSystem [] eller <> med namn)
-            // Välj vilket projekt användaren ska rapportera tid till (Skicka in MenuSystem [] eller <> med projekt)
-            //MenuSystem
         }
-
-
+        else if (userChoiceIndex == 3)
+        {
+            Console.WriteLine("Ändra tid: ");
+        }
 	}
-    // RUBBER DUCKING!
-    // skapa en funktion som tar in en array av strägnar
-    // den visar en meny med alla element från arrayen
-    // låt anändran välja med piltangenterna
-    // returnera vilket index anvädnaren valt.
-    // menuSystem(["Hej", "Yo", "Frank"]) -> 1 (anvädnarne valde Yo)
 
     static int MenuSystem(List<string> menuOptions)
     {
@@ -86,10 +50,10 @@ class Program
             // Skriver ut menyvalen
             Console.WriteLine($"{index + 1}. {menuOptions[index]}");
         }
-        Console.Write(">>>> ");
+        Console.Write(">>>> "); 
         string userInput = Console.ReadLine();
         int userChoice = int.Parse(userInput);
-
+        // Console.WriteLine($"Du valde {menuOptions[userChoice - 1]}");
         return userChoice - 1;
     }
 
@@ -123,7 +87,7 @@ class Program
 	}
 
 	// Method to create a new user in the program
-	static void CreateUser(List<PersonModel> createUser)
+	static void CreateUser()
 	{
         
 		Console.WriteLine("Skriv in in namn på användaren: ");
@@ -163,7 +127,13 @@ class Program
             hours = userInput
         };
         PostgressDataAccess.AddTimeToProject(workedHours);
-
 	}
+
+    static void ChangeHours()
+    {
+        // Uppdatera tid - Välj vilken rapportering som ska tas bort
+        // 
+        Console.WriteLine("");
+    }
 
 }

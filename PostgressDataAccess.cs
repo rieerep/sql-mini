@@ -16,7 +16,6 @@ namespace miniprojekt_sql
         {
             using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
             {
-
                 var output = cnn.Query<ProjectModel>("select * from rer_project", new DynamicParameters());
                 //Console.WriteLine(output);
                 return output.ToList();
@@ -30,7 +29,6 @@ namespace miniprojekt_sql
 		{
 			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
 			{
-
 				var output = cnn.Query<PersonModel>("SELECT * from rer_person", new DynamicParameters());
 				return output.ToList();
 			}
@@ -39,11 +37,22 @@ namespace miniprojekt_sql
 			// Returnerar en lista av Users
 		}
 
-        public static void NewPerson(PersonModel newPerson)
+		public static List<PersonModel> ListOnePersonProjects()
+		{
+			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+			{
+				var output = cnn.Query<PersonModel>("SELECT * from rer_person", new DynamicParameters());
+				return output.ToList();
+			}
+			// Kopplar upp mot DB:n
+			// läser ut alla Users
+			// Returnerar en lista av Users
+		}
+
+		public static void NewPerson(PersonModel newPerson)
         {
 			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
 			{
-
 				cnn.Execute("INSERT INTO rer_person (person_name) VALUES (@person_name)", newPerson);
 			}
 		}
@@ -69,5 +78,15 @@ namespace miniprojekt_sql
 				cnn.Execute("INSERT INTO rer_project_person (project_id, person_id, hours) VALUES (@project_id, @person_id, @hours)", addTime);
             }
         }
-    }
+		public static void RemoveUser(string deleteChoice)
+		{
+			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+			{
+				//cnn.Execute($"UPDATE rer_student SET passw = '{password}' WHERE email = '{email}'");
+				cnn.Execute($"DELETE FROM rer_person WHERE name = '{deleteChoice}'");
+				//cnn.Execute("UPDATE rer_student SET passw = '1891' WHERE email = 'bob@bob.nu'");
+				//cnn.Execute("insert into rer_student () values (@name, @points,@start_date, @end_date", changingpassword);
+			}
+		}
+	}
 }
