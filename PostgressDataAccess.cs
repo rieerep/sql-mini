@@ -20,9 +20,6 @@ namespace miniprojekt_sql
                 //Console.WriteLine(output);
                 return output.ToList();
             }
-            // Kopplar upp mot DB:n 
-            // läser ut alla Users
-            // Returnerar en lista av Users
         }
 
 		public static List<PersonModel> ListPersons()
@@ -32,9 +29,6 @@ namespace miniprojekt_sql
 				var output = cnn.Query<PersonModel>("SELECT * from rer_person", new DynamicParameters());
 				return output.ToList();
 			}
-			// Kopplar upp mot DB:n
-			// läser ut alla Users
-			// Returnerar en lista av Users
 		}
 
 		public static List<PersonModel> ListOnePersonProjects()
@@ -44,9 +38,6 @@ namespace miniprojekt_sql
 				var output = cnn.Query<PersonModel>("SELECT * from rer_person", new DynamicParameters());
 				return output.ToList();
 			}
-			// Kopplar upp mot DB:n
-			// läser ut alla Users
-			// Returnerar en lista av Users
 		}
 
 		public static void NewPerson(PersonModel newPerson)
@@ -69,6 +60,8 @@ namespace miniprojekt_sql
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
+
+        // Metod för att lägga till tid i tidsrappoertering - pratar med databasen.
         public static void AddTimeToProject(ProjectPersonModel addTime)
         {
             using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
@@ -78,6 +71,8 @@ namespace miniprojekt_sql
 				cnn.Execute("INSERT INTO rer_project_person (project_id, person_id, hours) VALUES (@project_id, @person_id, @hours)", addTime);
             }
         }
+
+		//Metod som inte används i programmet - WIP.
 		public static void RemoveUser(string deleteChoice)
 		{
 			using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
@@ -88,6 +83,8 @@ namespace miniprojekt_sql
 				//cnn.Execute("insert into rer_student () values (@name, @points,@start_date, @end_date", changingpassword);
 			}
 		}
+
+        //Metod som inte används i programmet - WIP.
         public static List<PersonModel> CheckPersonID(PersonModel userInput)
         {
             using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
@@ -100,7 +97,8 @@ namespace miniprojekt_sql
             // Returnerar en lista av Users
         }
 
-        public static void ChangeProjectName(ProjectModel project)
+		//Metod som inte används i programmet - WIP.
+		public static void ChangeProjectName(ProjectModel project)
         {
             using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
             {
