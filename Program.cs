@@ -3,45 +3,76 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello!1");
+		string aNumberToConvert = "100a";
+		string message;
+
+		int result;
+		bool success = int.TryParse(aNumberToConvert, out result);
+
+		if (success == true)
+		{
+			message = "Yay";
+		}
+		else
+		{
+			message = "Boo, not valid";
+		}
+
+        Console.WriteLine(message);
+        Console.WriteLine(success);
+        Console.WriteLine(result);
+
         List<ProjectModel> allProjects = PostgressDataAccess.ListProjects();
 		List<PersonModel> allUser = PostgressDataAccess.ListPersons();
 
 		List<string> menuOptions = new List<string> {"Create user", "Create a project", "Time reporting"};
-        
-        // Prints the menu users can choose between.
-        //MenuSystem(menuOptions);
-        //int userChoice = MenuSystem(menuOptions);
-        //Console.WriteLine(userChoice);
-        int userChoiceIndex = MenuSystem(menuOptions);
 
-		// Om användaren trycker "1" och vill skapa en användare
-		if (userChoiceIndex == 0) 
+
+		//MenuSystem(menuOptions);
+		//int userChoice = MenuSystem(menuOptions);
+		//Console.WriteLine(userChoice);
+
+		// Prints the menu users can choose between.
+		//int userChoiceIndex = MenuSystem(menuOptions);
+        bool loggedIn = true;
+        while (loggedIn)
         {
-            CreateUser();
-            return;
-        }
-        // Om användaren trycker "2" och vill skapa ett projekt
-        else if (userChoiceIndex == 1)
-        {
-            Console.WriteLine("Du skapar ett projekt.");
-            CreateProject();
-        }
-        // Om användaren trycker "3" och vill välja användare och rapportera tid
-        else if (userChoiceIndex == 2)
-        {
-            Console.WriteLine("Du valde rapportera tid");
-            // MenuSystem(allUser);
-            int userHours = MenuSystem(allUser);
-            // MenuSystem(allProjects);
-            int projectHours = MenuSystem(allProjects);
-            AddHours(userHours, projectHours);
-        }
-        else if (userChoiceIndex == 3)
-        {
-            Console.WriteLine("Ändra tid: ");
-        }
-	}
+
+			int userChoiceIndex = MenuSystem(menuOptions);
+			// Om användaren trycker "1" och vill skapa en användare
+			if (userChoiceIndex == 0)
+			{
+				CreateUser();
+				return;
+			}
+			// Om användaren trycker "2" och vill skapa ett projekt
+			else if (userChoiceIndex == 1)
+			{
+				Console.WriteLine("Du skapar ett projekt.");
+				CreateProject();
+			}
+			// Om användaren trycker "3" och vill välja användare och rapportera tid
+			else if (userChoiceIndex == 2)
+			{
+				Console.WriteLine("Du valde rapportera tid");
+				// MenuSystem(allUser);
+				int userHours = MenuSystem(allUser);
+				// MenuSystem(allProjects);
+				int projectHours = MenuSystem(allProjects);
+				AddHours(userHours, projectHours);
+				int chosenID = allProjects[projectHours].id;
+                Console.WriteLine("Chosen ID: " + chosenID);
+            }
+			else if (userChoiceIndex == 3)
+			{
+				Console.WriteLine("Ändra tid: ");
+			}
+			else Console.WriteLine("Invalid input!");
+			return;
+		}
+		
+
+    }
 
     static int MenuSystem(List<string> menuOptions)
     {
@@ -50,7 +81,7 @@ class Program
             // Skriver ut menyvalen
             Console.WriteLine($"{index + 1}. {menuOptions[index]}");
         }
-        Console.Write(">>>> "); 
+        Console.Write(">>>> ");
         string userInput = Console.ReadLine();
         int userChoice = int.Parse(userInput);
         // Console.WriteLine($"Du valde {menuOptions[userChoice - 1]}");
@@ -128,12 +159,5 @@ class Program
         };
         PostgressDataAccess.AddTimeToProject(workedHours);
 	}
-
-    static void ChangeHours()
-    {
-        // Uppdatera tid - Välj vilken rapportering som ska tas bort
-        // 
-        Console.WriteLine("");
-    }
 
 }
