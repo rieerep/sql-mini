@@ -1,31 +1,17 @@
-﻿namespace miniprojekt_sql;
+﻿using System.Collections.Generic;
+
+namespace miniprojekt_sql;
 class Program
 {
     static void Main(string[] args)
     {
-		string aNumberToConvert = "100a";
-		string message;
 
-		int result;
-		bool success = int.TryParse(aNumberToConvert, out result);
-
-		if (success == true)
-		{
-			message = "Yay";
-		}
-		else
-		{
-			message = "Boo, not valid";
-		}
-
-        Console.WriteLine(message);
-        Console.WriteLine(success);
-        Console.WriteLine(result);
+        Console.WriteLine("Welcome to the time report program.");
 
         List<ProjectModel> allProjects = PostgressDataAccess.ListProjects();
 		List<PersonModel> allUser = PostgressDataAccess.ListPersons();
 
-		List<string> menuOptions = new List<string> {"Create user", "Create a project", "Time reporting"};
+		List<string> menuOptions = new List<string> {"Create user", "Create a project", "Time reporting", "Edit project name"};
 
 
 		//MenuSystem(menuOptions);
@@ -48,13 +34,13 @@ class Program
 			// Om användaren trycker "2" och vill skapa ett projekt
 			else if (userChoiceIndex == 1)
 			{
-				Console.WriteLine("Du skapar ett projekt.");
+				Console.WriteLine("Create project");
 				CreateProject();
 			}
 			// Om användaren trycker "3" och vill välja användare och rapportera tid
 			else if (userChoiceIndex == 2)
 			{
-				Console.WriteLine("Du valde rapportera tid");
+				Console.WriteLine("Time report");
 				// MenuSystem(allUser);
 				int userHours = MenuSystem(allUser);
 				// MenuSystem(allProjects);
@@ -65,7 +51,8 @@ class Program
             }
 			else if (userChoiceIndex == 3)
 			{
-				Console.WriteLine("Ändra tid: ");
+				Console.WriteLine("Change time: ");
+				UpdateProjectName();
 			}
 			else Console.WriteLine("Invalid input!");
 			return;
@@ -74,6 +61,7 @@ class Program
 
     }
 
+	// Listar alla menyval via en List av strings
     static int MenuSystem(List<string> menuOptions)
     {
         for (int index = 0; index < menuOptions.Count; index++)
@@ -120,7 +108,6 @@ class Program
 	// Method to create a new user in the program
 	static void CreateUser()
 	{
-        
 		Console.WriteLine("Skriv in in namn på användaren: ");
 		Console.Write(">>>> ");
 		string personName = Console.ReadLine();
@@ -159,5 +146,28 @@ class Program
         };
         PostgressDataAccess.AddTimeToProject(workedHours);
 	}
+    static void UpdateProjectName()
+	{
+		List<ProjectModel> projects = PostgressDataAccess.ListProjects();
+
+		int i = 1;
+		foreach (ProjectModel project in projects)
+		{
+            Console.WriteLine(i++ + " " + project.project_name);
+        }
+
+        Console.WriteLine("Skriv in nummret på projektet du vill ändra: ");
+		int userInput = Convert.ToInt32(Console.ReadLine());	
+
+			if (userInput <= projects.Count() && userInput > 0)
+			{
+				Console.WriteLine("Please enter a new name: ");
+				string newprojectname = Console.ReadLine();
+
+				projects[userInput - 1].project_name = newprojectname;
+				PostgressDataAccess.ChangeProjectName(projects[userInput - 1]);
+            }
+        
+    }
 
 }

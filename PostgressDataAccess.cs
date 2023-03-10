@@ -88,5 +88,27 @@ namespace miniprojekt_sql
 				//cnn.Execute("insert into rer_student () values (@name, @points,@start_date, @end_date", changingpassword);
 			}
 		}
-	}
+        public static List<PersonModel> CheckPersonID(PersonModel userInput)
+        {
+            using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<PersonModel>($"SELECT id FROM rer_person WHERE person_name = {userInput} ", new DynamicParameters());
+                return output.ToList();
+            }
+            // Kopplar upp mot DB:n
+            // läser ut alla Users
+            // Returnerar en lista av Users
+        }
+
+        public static void ChangeProjectName(ProjectModel project)
+        {
+            using (IDbConnection cnn = new NpgsqlConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<PersonModel>($"UPDATE rer_project SET project_name = @project_name WHERE id = @id", project);
+            }
+        }
+
+
+
+    }
 }
